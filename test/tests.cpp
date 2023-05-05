@@ -6,10 +6,10 @@ TEST(markovTest, formationTextWithGivenPrefixCount) {
     int wordsInPrefix = 2;
     vector<string> words = { "Another", "One", "Bites", "the", "Dust" };
 
-    auto generator = MarkovChains(wordsInPrefix, words);
-    auto table = generator.GetStatetab();
+    auto gen = MarkovChains(wordsInPrefix, words);
+    auto tab = gen.GetStatetab();
 
-    for (auto element : table) {
+    for (auto element : tab) {
         EXPECT_EQ(element.first.size(), wordsInPrefix);
     }
 }
@@ -18,8 +18,8 @@ TEST(markovTest, formationPairPrefixSuffix) {
     int wordsInPrefix = 2;
     vector<string> words = { "Another", "One", "Bites", "the", "Dust" };
 
-    auto generator = MarkovChains(wordsInPrefix, words);
-    auto table = generator.GetStatetab();
+    auto gen = MarkovChains(wordsInPrefix, words);
+    auto tab = gen.GetStatetab();
 
     prefix prefix;
     prefix.push_back(words[0]);
@@ -27,8 +27,8 @@ TEST(markovTest, formationPairPrefixSuffix) {
     for (int i = 1; i < words.size() - 1; i++) {
         prefix.push_back(words[i]);
 
-        EXPECT_EQ(table[prefix].size(), 1);
-        EXPECT_EQ(table[prefix][0], words[i + 1]);
+        EXPECT_EQ(tab[prefix].size(), 1);
+        EXPECT_EQ(tab[prefix][0], words[i + 1]);
 
         prefix.pop_front();
     }
@@ -38,40 +38,40 @@ TEST(markovTest, checkOneSuffix) {
     int wordsInPrefix = 1;
     vector<string> words = { "Another", "One", "Bites", "the", "Dust" };
 
-    auto generator = MarkovChains(wordsInPrefix, words);
-    auto table = generator.GetStatetab();
+    auto gen = MarkovChains(wordsInPrefix, words);
+    auto tab = gen.GetStatetab();
 
     prefix prefix;
     prefix.push_back(words[0]);
 
-    EXPECT_EQ(table[prefix].size(), 1);
-    EXPECT_EQ(table[prefix][0], words[1]);
+    EXPECT_EQ(tab[prefix].size(), 1);
+    EXPECT_EQ(tab[prefix][0], words[1]);
 }
 
 TEST(markovTest, checkDifferentSuffixes) {
     int wordsInPrefix = 1;
     vector<string> words = { "Another", "One", "Bites", "the", "Dust" };
 
-    auto generator = MarkovChains(wordsInPrefix, words);
-    auto table = generator.GetStatetab();
+    auto gen = MarkovChains(wordsInPrefix, words);
+    auto tab = gen.GetStatetab();
 
     prefix prefix;
     prefix.push_back(words[0]);
 
-    EXPECT_EQ(table[prefix].size(), 2);
-    EXPECT_EQ(table[prefix][0], words[1]);
-    EXPECT_EQ(table[prefix][1], words[2]);
+    EXPECT_EQ(tab[prefix].size(), 2);
+    EXPECT_EQ(tab[prefix][0], words[1]);
+    EXPECT_EQ(tab[prefix][1], words[2]);
 
     prefix.pop_front();
     prefix.push_back(words[2]);
 
-    EXPECT_EQ(table[prefix].size(), 1);
-    EXPECT_EQ(table[prefix][0], words[3]);
+    EXPECT_EQ(tab[prefix].size(), 1);
+    EXPECT_EQ(tab[prefix][0], words[3]);
 }
 
 TEST(markovTest, formationTextWithGivenTable) {
     vector<string> words = { "Another", "One", "Bites", "the", "Dust" };
-    map<prefix, suffix> table;
+    map<prefix, suffix> tab;
 
     prefix prefix;
     suffix suffix;
@@ -82,20 +82,20 @@ TEST(markovTest, formationTextWithGivenTable) {
         prefix.push_back(words[i]);
         suffix.push_back(words[i + 1]);
 
-        table.insert({ prefix, suffix });
+        tab.insert({ prefix, suffix });
 
         prefix.pop_front();
         suffix.pop_back();
     }
 
-    auto generator = MarkovChains(table);
+    auto gen = MarkovChains(tab);
 
-    auto text = generator.GenerateText(5);
+    auto text = gen.GenerateText(5);
     EXPECT_EQ(text, "Another One Bites the Dust");
 
-    text = generator.GenerateText(10);
+    text = gen.GenerateText(10);
     EXPECT_EQ(text, "Another One Bites the Dust");
 
-    text = generator.GenerateText(3);
+    text = gen.GenerateText(3);
     EXPECT_EQ(text, "Another One Bites");
 }

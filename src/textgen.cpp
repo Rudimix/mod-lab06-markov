@@ -5,8 +5,7 @@ MarkovChains::MarkovChains(map<prefix, suffix> statetab) {
     if (IsCorrect(statetab)) {
         wordsInPrefix = statetab.begin()->first.size();
         this->statetab = statetab;
-    }
-    else {
+    } else {
         throw invalid_argument("Incorrect table");
     }
 }

@@ -27,7 +27,7 @@ typedef deque<string> prefix;
 typedef vector<string> suffix;
 
 class MarkovChains {
-public:
+ public:
     explicit MarkovChains(map<prefix, suffix> statetab);
     explicit MarkovChains(int prefixSize, vector<string> words);
     explicit MarkovChains(int prefixSIze, const string filePath);
@@ -35,7 +35,7 @@ public:
     map<prefix, suffix> GetStatetab();
     void PrintStatetab(const map<prefix, suffix> table);
 
-private:
+ private:
     int wordsInPrefix;
     map<prefix, suffix> statetab;
     void InitStatetab(const vector<string> words);
