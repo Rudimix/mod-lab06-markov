@@ -50,7 +50,7 @@ TEST(markovTest, checkOneSuffix) {
 
 TEST(markovTest, checkDifferentSuffixes) {
     int wordsInPrefix = 1;
-    vector<string> words = { "Another", "One", "Bites", "the", "Dust" };
+    vector<string> words = { "Another", "Another", "Bites", "the", "Dust" };
 
     auto gen = MarkovChains(wordsInPrefix, words);
     auto tab = gen.GetStatetab();
